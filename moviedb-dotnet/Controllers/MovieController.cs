@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using moviedb_dotnet.Services.IServices;
 
 namespace moviedb_dotnet.Controllers
 {
@@ -6,16 +7,25 @@ namespace moviedb_dotnet.Controllers
     [Route("[controller]")]
     public class MovieController : Controller
     {
+        private readonly IMovieService _service;
+
+        public MovieController(IMovieService service)
+        {
+            _service = service;
+        }
+
         [HttpPost]
         public IActionResult CreateMovie()
         {
-            return Ok("Created movie");
+            var result = _service.CreateMovie();
+            return Ok(result);
         }
 
         [HttpGet]
         public IActionResult FindOneMovie()
         {
-            return Ok("Find one movie");
+            var result = _service.FindOneMovie("ID STRING");
+            return Ok(result);
         }
 
         [HttpGet("search")]

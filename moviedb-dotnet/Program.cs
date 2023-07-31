@@ -1,4 +1,13 @@
+using moviedb_dotnet.Services;
+using moviedb_dotnet.Services.IServices;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Custom
+
+builder.Services.AddTransient<IMovieService, MovieService>();
+
+//Custom
 
 // Add services to the container.
 
