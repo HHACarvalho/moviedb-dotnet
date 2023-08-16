@@ -1,11 +1,14 @@
-﻿using moviedb_dotnet.DTOs;
+﻿using moviedb_dotnet.Domain;
 
 namespace moviedb_dotnet.Repos.IRepos
 {
     public interface IMovieRepo
     {
-        Task<bool> Exists(string id);
-        Task<MovieBodyDTO> CreateMovie(MovieBodyDTO movie);
-        Task<MovieBodyDTO> FindOneMovie(string id);
+        Task<Movie> CreateMovie(Movie movie);
+        Task<Movie?> FindOneMovie(string id);
+        Task<List<Movie>> FindMovies(string title);
+        Task<List<Movie>> FindAllMovies();
+        Task<Movie> UpdateMovie(Movie movie);
+        Task<Movie> DeleteMovie(string id);
     }
 }
