@@ -5,12 +5,12 @@ using moviedb_dotnet.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Custom
+// CUSTOM
 
-builder.Services.AddTransient<IMovieService, MovieService>();
 builder.Services.AddTransient<IMovieRepo, MovieRepo>();
+builder.Services.AddTransient<IMovieService, MovieService>();
 
-//Custom
+// CUSTOM
 
 // Add services to the container.
 
