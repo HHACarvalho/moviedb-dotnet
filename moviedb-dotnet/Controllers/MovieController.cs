@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using moviedb_dotnet.DTOs;
 using moviedb_dotnet.Services.IServices;
+using System.Diagnostics;
 
 namespace moviedb_dotnet.Controllers
 {
@@ -15,39 +17,67 @@ namespace moviedb_dotnet.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateMovie()
+        public async Task<IActionResult> CreateMovieAsync(MovieRequestBody dto)
         {
-            var result = _service.CreateMovie();
-            return Ok(result);
+            try
+            {
+                var result = await _service.CreateMovie(dto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Logger
+                Debug.WriteLine(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet]
-        public IActionResult FindOneMovie()
+        public IActionResult FindOneMovieAsync([FromQuery(Name = "id")] string id)
         {
-            var result = _service.FindOneMovie("ID STRING");
-            return Ok(result);
+            return Ok("Find one movie");
         }
 
         [HttpGet("search")]
-        public IActionResult FindMovies()
+        public IActionResult FindMovies([FromQuery(Name = "title")] string title)
         {
             return Ok("Find movies");
         }
 
         [HttpGet("all")]
-        public IActionResult FindAllMovies()
+        public async Task<IActionResult> FindAllMovies()
         {
-            return Ok("Find all movies");
+            try
+            {
+                var result = await _service.FindAllMovies();
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Logger
+                Debug.WriteLine(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPut]
-        public IActionResult UpdateMovie()
+        public IActionResult UpdateMovie([FromQuery(Name = "id")] string id)
         {
             return Ok("Update movie");
         }
 
         [HttpDelete]
-        public IActionResult DeleteMovie()
+        public IActionResult DeleteMovie([FromQuery(Name = "id")] string id)
         {
             return Ok("Delete movie");
         }
