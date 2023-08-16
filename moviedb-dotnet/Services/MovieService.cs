@@ -1,37 +1,76 @@
-﻿using moviedb_dotnet.Services.IServices;
-using System.Diagnostics;
+﻿using moviedb_dotnet.Core;
+using moviedb_dotnet.Core.Domain;
+using moviedb_dotnet.Domain;
+using moviedb_dotnet.DTOs;
+using moviedb_dotnet.Mappers;
+using moviedb_dotnet.Repos.IRepos;
+using moviedb_dotnet.Services.IServices;
 
 namespace moviedb_dotnet.Services
 {
     public class MovieService : IMovieService
     {
-        public string CreateMovie()
+        private readonly IMovieRepo _repo;
+
+        public MovieService(IMovieRepo repo)
         {
-            Debug.WriteLine("HAHAHA");
-            return "Created movie";
+            _repo = repo;
         }
 
-        public string FindOneMovie(string id)
+        public async Task<Result<MovieDTO>> CreateMovie(MovieRequestBody dto)
         {
-            return "Find one movie";
+            var movie = new Movie(new EntityID(null), "Shawshank Redemption", "Frank Darabont", 1995);
+
+            await _repo.CreateMovie(movie);
+
+            return Result<MovieDTO>.Ok(MovieMapper.toDTO(movie));
         }
 
-        public void FindMovies()
+        public async Task<Result<MovieDTO>> FindOneMovie(string id)
         {
+            var movie = await _repo.FindOneMovie(id);
+            if (movie == null)
+            {
+                return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
+            }
+
+            return Result<MovieDTO>.Ok(MovieMapper.toDTO(movie));
+        }
+
+        public async Task<Result<List<MovieDTO>>> FindMovies(string title)
+        {
+            var movieList = await _repo.FindMovies(title);
+            if (movieList.Count == 0)
+            {
+                return Result<List<MovieDTO>>.Fail("No movies with " + title + " in the title were found");
+            }
+
+            return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.toDTO));
+        }
+
+        public async Task<Result<List<MovieDTO>>> FindAllMovies()
+        {
+            var movieList = await _repo.FindAllMovies();
+            if (movieList.Count == 0)
+            {
+                return Result<List<MovieDTO>>.Fail("There are no movies");
+            }
+
+            return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.toDTO));
+        }
+
+        public async Task<Result<MovieDTO>> UpdateMovie(MovieRequestBody dto, string id)
+        {
+            /*var movie = await _repo.FindOneMovie(id);
+            if (movie == null)
+            {
+                return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
+            }*/
+
             throw new NotImplementedException();
         }
 
-        public void FindAllMovies()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateMovie(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteMovie(string id)
+        public async Task<Result<MovieDTO>> DeleteMovie(string id)
         {
             throw new NotImplementedException();
         }
