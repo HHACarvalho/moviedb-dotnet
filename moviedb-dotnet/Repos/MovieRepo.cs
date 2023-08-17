@@ -17,12 +17,12 @@ namespace moviedb_dotnet.Repos
         public async Task CreateMovie(Movie movie)
         {
             await _db.Movies.AddAsync(movie);
-            await _db.SaveChangesAsync();
+            await CommitChanges();
         }
 
         public async Task<Movie?> FindOneMovie(string id)
         {
-            return await _db.Movies.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            return await _db.Movies.Where(x => x.Id.ToString().Equals(id)).FirstOrDefaultAsync();
         }
 
         public async Task<List<Movie>> FindMovies(string title)
@@ -35,14 +35,14 @@ namespace moviedb_dotnet.Repos
             return await _db.Movies.ToListAsync();
         }
 
-        public async Task UpdateMovie()
-        {
-            await _db.SaveChangesAsync();
-        }
-
         public async Task DeleteMovie(Movie movie)
         {
             _db.Movies.Remove(movie);
+            await CommitChanges();
+        }
+
+        public async Task CommitChanges()
+        {
             await _db.SaveChangesAsync();
         }
     }

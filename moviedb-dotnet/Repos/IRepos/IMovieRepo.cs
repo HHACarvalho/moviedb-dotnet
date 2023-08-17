@@ -8,7 +8,7 @@ namespace moviedb_dotnet.Repos.IRepos
         Task<Movie?> FindOneMovie(string id);
         Task<List<Movie>> FindMovies(string title);
         Task<List<Movie>> FindAllMovies();
-        Task UpdateMovie();
         Task DeleteMovie(Movie movie);
+        Task CommitChanges();
     }
 }

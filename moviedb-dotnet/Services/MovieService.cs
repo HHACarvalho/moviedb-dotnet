@@ -70,7 +70,7 @@ namespace moviedb_dotnet.Services
             movie.Director = dto.Director;
             movie.Year = dto.Year;
 
-            await _repo.UpdateMovie();
+            await _repo.CommitChanges();
 
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
