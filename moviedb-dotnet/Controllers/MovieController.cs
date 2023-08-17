@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using moviedb_dotnet.Core;
 using moviedb_dotnet.DTOs;
 using moviedb_dotnet.Services.IServices;
+using System.Diagnostics;
 
 namespace moviedb_dotnet.Controllers
 {
@@ -18,35 +20,69 @@ namespace moviedb_dotnet.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovieAsync(MovieRequestBody dto)
+        public async Task<IActionResult> CreateMovie(MovieRequestBody dto)
         {
             try
             {
                 var result = await _service.CreateMovie(dto);
                 if (!result.IsSuccess)
                 {
+                    _logger.LogWarning(Utils.LogMessage(false));
                     return BadRequest(result.Error);
                 }
 
+                _logger.LogInformation(Utils.LogMessage(false));
                 return Ok(result.Value);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpGet]
-        public IActionResult FindOneMovieAsync([FromQuery(Name = "id")] string id)
+        public async Task<IActionResult> FindOneMovie([FromQuery(Name = "id")] string id)
         {
-            return Ok("Find one movie");
+            try
+            {
+                var result = await _service.FindOneMovie(id);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogWarning(Utils.LogMessage(false));
+                    return BadRequest(result.Error);
+                }
+
+                _logger.LogInformation(Utils.LogMessage(false));
+                return Ok(result.Value);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("search")]
-        public IActionResult FindMovies([FromQuery(Name = "title")] string title)
+        public async Task<IActionResult> FindMovies([FromQuery(Name = "title")] string title)
         {
-            return Ok("Find movies");
+            try
+            {
+                var result = await _service.FindMovies(title);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogWarning(Utils.LogMessage(false));
+                    return BadRequest(result.Error);
+                }
+
+                _logger.LogInformation(Utils.LogMessage(false));
+                return Ok(result.Value);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("all")]
@@ -57,28 +93,62 @@ namespace moviedb_dotnet.Controllers
                 var result = await _service.FindAllMovies();
                 if (!result.IsSuccess)
                 {
+                    _logger.LogWarning(Utils.LogMessage(false));
                     return BadRequest(result.Error);
                 }
 
+                _logger.LogInformation(Utils.LogMessage(false));
                 return Ok(result.Value);
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpPut]
-        public IActionResult UpdateMovie([FromQuery(Name = "id")] string id)
+        public async Task<IActionResult> UpdateMovie(MovieRequestBody dto, [FromQuery(Name = "id")] string id)
         {
-            return Ok("Update movie");
+            try
+            {
+                var result = await _service.UpdateMovie(dto, id);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogWarning(Utils.LogMessage(false));
+                    return BadRequest(result.Error);
+                }
+
+                _logger.LogInformation(Utils.LogMessage(false));
+                return Ok(result.Value);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpDelete]
-        public IActionResult DeleteMovie([FromQuery(Name = "id")] string id)
+        public async Task<IActionResult> DeleteMovie([FromQuery(Name = "id")] string id)
         {
-            return Ok("Delete movie");
+            try
+            {
+                var result = await _service.DeleteMovie(id);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogWarning(Utils.LogMessage(false));
+                    return BadRequest(result.Error);
+                }
+
+                _logger.LogInformation(Utils.LogMessage(false));
+                return Ok(result.Value);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }
