@@ -1,38 +1,49 @@
-﻿using moviedb_dotnet.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using moviedb_dotnet.Core;
+using moviedb_dotnet.Domain;
 using moviedb_dotnet.Repos.IRepos;
 
 namespace moviedb_dotnet.Repos
 {
     public class MovieRepo : IMovieRepo
     {
-        public async Task<Movie> CreateMovie(Movie movie)
+        private readonly AppDBContext _db;
+
+        public MovieRepo(AppDBContext dbContext)
         {
-            throw new NotImplementedException();
+            _db = dbContext;
         }
 
-        public async Task<Movie> DeleteMovie(string id)
+        public async Task CreateMovie(Movie movie)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Movie>> FindAllMovies()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Movie>> FindMovies(string title)
-        {
-            throw new NotImplementedException();
+            await _db.Movies.AddAsync(movie);
+            await _db.SaveChangesAsync();
         }
 
         public async Task<Movie?> FindOneMovie(string id)
         {
-            throw new NotImplementedException();
+            return await _db.Movies.Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public async Task<Movie> UpdateMovie(Movie movie)
+        public async Task<List<Movie>> FindMovies(string title)
         {
-            throw new NotImplementedException();
+            return await _db.Movies.Where(x => x.Title.Contains(title)).ToListAsync();
+        }
+
+        public async Task<List<Movie>> FindAllMovies()
+        {
+            return await _db.Movies.ToListAsync();
+        }
+
+        public async Task UpdateMovie()
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task DeleteMovie(Movie movie)
+        {
+            _db.Movies.Remove(movie);
+            await _db.SaveChangesAsync();
         }
     }
 }
