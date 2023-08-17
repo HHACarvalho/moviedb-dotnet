@@ -27,7 +27,7 @@ namespace moviedb_dotnet.Controllers
                     return BadRequest(result.Error);
                 }
 
-                return Ok(result);
+                return Ok(result.Value);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace moviedb_dotnet.Controllers
                     return BadRequest(result.Error);
                 }
 
-                return Ok(result);
+                return Ok(result.Value);
             }
             catch (Exception ex)
             {
