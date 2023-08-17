@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using moviedb_dotnet.DTOs;
 using moviedb_dotnet.Services.IServices;
-using System.Diagnostics;
 
 namespace moviedb_dotnet.Controllers
 {
@@ -9,10 +8,12 @@ namespace moviedb_dotnet.Controllers
     [Route("[controller]")]
     public class MovieController : Controller
     {
+        private readonly ILogger<MovieController> _logger;
         private readonly IMovieService _service;
 
-        public MovieController(IMovieService service)
+        public MovieController(ILogger<MovieController> logger, IMovieService service)
         {
+            _logger = logger;
             _service = service;
         }
 
@@ -31,8 +32,7 @@ namespace moviedb_dotnet.Controllers
             }
             catch (Exception ex)
             {
-                //TODO: Logger
-                Debug.WriteLine(ex);
+                _logger.LogInformation(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -64,8 +64,7 @@ namespace moviedb_dotnet.Controllers
             }
             catch (Exception ex)
             {
-                //TODO: Logger
-                Debug.WriteLine(ex);
+                _logger.LogInformation(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
