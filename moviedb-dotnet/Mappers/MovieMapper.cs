@@ -5,9 +5,9 @@ namespace moviedb_dotnet.Mappers
 {
     public class MovieMapper
     {
-        public static MovieDTO toDTO(Movie movie)
+        public static MovieDTO ToDTO(Movie movie)
         {
-            return new MovieDTO { Title = movie.Title, Director = movie.Director, Year = movie.Year };
+            return new MovieDTO { Id = movie.Id.ToString(), Title = movie.Title, Director = movie.Director, Year = movie.Year };
         }
     }
 }
