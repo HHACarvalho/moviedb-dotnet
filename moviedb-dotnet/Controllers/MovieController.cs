@@ -18,19 +18,24 @@ namespace moviedb_dotnet.Controllers
             _service = service;
         }
 
-        private async Task<IActionResult> HandleServiceCall<T>(Func<Task<Result<T>>> serviceCall) where T : class
+        private async Task<IActionResult> HandleServiceCall<T>(Func<Task<Result<T>>> serviceCall, string methodName) where T : class
         {
             try
             {
                 var result = await serviceCall();
                 if (!result.IsSuccess)
                 {
-                    _logger.LogWarning(Utils.LogMessage(false));
+                    _logger.LogWarning(Utils.LogMessage(false, methodName));
                     return BadRequest(result.Error);
                 }
 
-                _logger.LogInformation(Utils.LogMessage(false));
+                _logger.LogInformation(Utils.LogMessage(true, methodName));
                 return Ok(result.Value);
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
             catch (Exception ex)
             {
@@ -42,39 +47,39 @@ namespace moviedb_dotnet.Controllers
         //var bruh = Request.Cookies["token"];
 
         [HttpPost]
-        public async Task<IActionResult> NewCreateMovie(MovieRequestBody dto)
+        public async Task<IActionResult> CreateMovie(MovieRequestBody dto)
         {
-            return await HandleServiceCall(async () => await _service.CreateMovie(dto));
+            return await HandleServiceCall(async () => await _service.CreateMovie(dto), "CreateMovie");
         }
 
         [HttpGet]
         public async Task<IActionResult> FindOneMovie([FromQuery(Name = "id")] string id)
         {
-            return await HandleServiceCall(async () => await _service.FindOneMovie(id));
+            return await HandleServiceCall(async () => await _service.FindOneMovie(id), "FindOneMovie");
         }
 
         [HttpGet("search")]
         public async Task<IActionResult> FindMovies([FromQuery(Name = "title")] string title)
         {
-            return await HandleServiceCall(async () => await _service.FindMovies(title));
+            return await HandleServiceCall(async () => await _service.FindMovies(title), "FindMovies");
         }
 
         [HttpGet("all")]
         public async Task<IActionResult> FindAllMovies()
         {
-            return await HandleServiceCall(_service.FindAllMovies);
+            return await HandleServiceCall(_service.FindAllMovies, "FindAllMovies");
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(MovieRequestBody dto, [FromQuery(Name = "id")] string id)
         {
-            return await HandleServiceCall(async () => await _service.UpdateMovie(dto, id));
+            return await HandleServiceCall(async () => await _service.UpdateMovie(dto, id), "UpdateMovie");
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteMovie([FromQuery(Name = "id")] string id)
         {
-            return await HandleServiceCall(async () => await _service.DeleteMovie(id));
+            return await HandleServiceCall(async () => await _service.DeleteMovie(id), "DeleteMovie");
         }
     }
 }
