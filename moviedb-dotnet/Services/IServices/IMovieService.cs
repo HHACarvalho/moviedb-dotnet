@@ -1,4 +1,4 @@
-﻿using moviedb_dotnet.Core;
+﻿using moviedb_dotnet.Core.Infrastructure;
 using moviedb_dotnet.DTOs;
 
 namespace moviedb_dotnet.Services.IServices

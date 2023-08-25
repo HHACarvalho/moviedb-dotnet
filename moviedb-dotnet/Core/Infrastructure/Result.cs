@@ -1,4 +1,4 @@
-﻿namespace moviedb_dotnet.Core
+﻿namespace moviedb_dotnet.Core.Infrastructure
 {
     public class Result<T> where T : class
     {

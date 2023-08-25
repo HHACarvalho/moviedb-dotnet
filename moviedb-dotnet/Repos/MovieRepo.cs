@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using moviedb_dotnet.Core;
+using moviedb_dotnet.Core.Infrastructure;
 using moviedb_dotnet.Domain;
 using moviedb_dotnet.Repos.IRepos;
 
