@@ -66,9 +66,9 @@ namespace moviedb_dotnet.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> FindAllMovies()
+        public async Task<IActionResult> FindAllMovies([FromQuery(Name = "pageNumber")] int pageNumber, [FromQuery(Name = "pageSize")] int pageSize)
         {
-            return await HandleServiceCall(_service.FindAllMovies, "FindAllMovies");
+            return await HandleServiceCall(async () => await _service.FindAllMovies(pageNumber, pageSize), "FindAllMovies");
         }
 
         [HttpPut]

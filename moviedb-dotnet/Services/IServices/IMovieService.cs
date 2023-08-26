@@ -8,7 +8,7 @@ namespace moviedb_dotnet.Services.IServices
         Task<Result<MovieDTO>> CreateMovie(MovieRequestBody dto);
         Task<Result<MovieDTO>> FindOneMovie(string id);
         Task<Result<List<MovieDTO>>> FindMovies(string title);
-        Task<Result<List<MovieDTO>>> FindAllMovies();
+        Task<Result<List<MovieDTO>>> FindAllMovies(int pageNumber, int pageSize);
         Task<Result<MovieDTO>> UpdateMovie(MovieRequestBody dto, string id);
         Task<Result<MovieDTO>> DeleteMovie(string id);
     }
