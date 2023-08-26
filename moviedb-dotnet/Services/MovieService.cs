@@ -20,14 +20,14 @@ namespace moviedb_dotnet.Services
         {
             var movie = new Movie(dto.Title, dto.Director, dto.Year);
 
-            await _repo.CreateMovie(movie);
+            await _repo.Create(movie);
 
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
         public async Task<Result<MovieDTO>> FindOneMovie(string id)
         {
-            var movie = await _repo.FindOneMovie(id);
+            var movie = await _repo.FindOne(id);
             if (movie == null)
             {
                 return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
@@ -38,7 +38,7 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<List<MovieDTO>>> FindMovies(string title)
         {
-            var movieList = await _repo.FindMovies(title);
+            var movieList = await _repo.Find(title);
             if (movieList.Count == 0)
             {
                 return Result<List<MovieDTO>>.Fail("No movies with " + title + " in the title were found");
@@ -49,7 +49,7 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<List<MovieDTO>>> FindAllMovies()
         {
-            var movieList = await _repo.FindAllMovies();
+            var movieList = await _repo.FindAll();
             if (movieList.Count == 0)
             {
                 return Result<List<MovieDTO>>.Fail("There are no movies");
@@ -60,7 +60,7 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<MovieDTO>> UpdateMovie(MovieRequestBody dto, string id)
         {
-            var movie = await _repo.FindOneMovie(id);
+            var movie = await _repo.FindOne(id);
             if (movie == null)
             {
                 return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
@@ -77,13 +77,13 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<MovieDTO>> DeleteMovie(string id)
         {
-            var movie = await _repo.FindOneMovie(id);
+            var movie = await _repo.FindOne(id);
             if (movie == null)
             {
                 return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
             }
 
-            await _repo.DeleteMovie(movie);
+            await _repo.Delete(movie);
 
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }

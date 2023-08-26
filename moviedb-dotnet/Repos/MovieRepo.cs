@@ -9,7 +9,7 @@ namespace moviedb_dotnet.Repos
     {
         public MovieRepo(DbSet<Movie> db, AppDBContext dbc) : base(db, dbc) { }
 
-        public async Task<List<Movie>> FindMovies(string title)
+        public async Task<List<Movie>> Find(string title)
         {
             return await _db.Where(x => x.Title.Contains(title)).ToListAsync();
         }
