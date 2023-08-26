@@ -7,11 +7,11 @@ namespace moviedb_dotnet.Repos
 {
     public class MovieRepo : Repo<Movie>, IMovieRepo
     {
-        public MovieRepo(DbSet<Movie> db, AppDBContext dbc) : base(db, dbc) { }
+        public MovieRepo(AppDBContext dbc) : base(dbc, dbc.Movies) { }
 
         public async Task<List<Movie>> Find(string title)
         {
-            return await _db.Where(x => x.Title.Contains(title)).ToListAsync();
+            return await _dbs.Where(x => x.Title.Contains(title)).ToListAsync();
         }
     }
 }
