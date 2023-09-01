@@ -1,4 +1,4 @@
-using moviedb_dotnet.Core;
+using moviedb_dotnet.Core.Infrastructure;
 using moviedb_dotnet.Repos;
 using moviedb_dotnet.Repos.IRepos;
 using moviedb_dotnet.Services;
@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // CUSTOM
 
 builder.Services.AddDbContext<AppDBContext>();
+
+builder.Services.AddHttpClient();
 
 builder.Services.AddTransient<IMovieRepo, MovieRepo>();
 builder.Services.AddTransient<IMovieService, MovieService>();

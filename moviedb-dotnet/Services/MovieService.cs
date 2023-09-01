@@ -9,14 +9,26 @@ namespace moviedb_dotnet.Services
 {
     public class MovieService : IMovieService
     {
+        private readonly HttpClient _http;
         private readonly IMovieRepo _repo;
 
-        public MovieService(IMovieRepo repo)
+        public MovieService(HttpClient http, IMovieRepo repo)
         {
+            _http = http;
             _repo = repo;
         }
 
-        public async Task<Result<MovieDTO>> CreateMovie(MovieRequestBody dto)
+        private async Task CheckPermissions(string? jwt)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:3000/validation/movie");
+            request.Headers.Add("Cookie", "token=" + jwt);
+
+            var result = await _http.SendAsync(request);
+            Debug.WriteLine(result.StatusCode);
+            result.EnsureSuccessStatusCode();
+        }
+
+        public async Task<Result<MovieDTO>> CreateMovie(string? jwt, MovieRequestBody dto)
         {
             var movie = new Movie(dto.Title, dto.Director, dto.Year);
 
