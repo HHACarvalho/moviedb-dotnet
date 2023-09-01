@@ -1,9 +1,10 @@
-﻿using moviedb_dotnet.Core;
+﻿using moviedb_dotnet.Core.Infrastructure;
 using moviedb_dotnet.Domain;
 using moviedb_dotnet.DTOs;
 using moviedb_dotnet.Mappers;
 using moviedb_dotnet.Repos.IRepos;
 using moviedb_dotnet.Services.IServices;
+using System.Diagnostics;
 
 namespace moviedb_dotnet.Services
 {
@@ -30,6 +31,8 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<MovieDTO>> CreateMovie(string? jwt, MovieRequestBody dto)
         {
+            await CheckPermissions(jwt);
+
             var movie = new Movie(dto.Title, dto.Director, dto.Year);
 
             await _repo.Create(movie);
@@ -70,8 +73,10 @@ namespace moviedb_dotnet.Services
             return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.ToDTO));
         }
 
-        public async Task<Result<MovieDTO>> UpdateMovie(MovieRequestBody dto, string id)
+        public async Task<Result<MovieDTO>> UpdateMovie(string? jwt, MovieRequestBody dto, string id)
         {
+            await CheckPermissions(jwt);
+
             var movie = await _repo.FindOne(id);
             if (movie == null)
             {
@@ -87,8 +92,10 @@ namespace moviedb_dotnet.Services
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
-        public async Task<Result<MovieDTO>> DeleteMovie(string id)
+        public async Task<Result<MovieDTO>> DeleteMovie(string? jwt, string id)
         {
+            await CheckPermissions(jwt);
+
             var movie = await _repo.FindOne(id);
             if (movie == null)
             {

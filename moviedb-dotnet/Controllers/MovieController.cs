@@ -36,21 +36,19 @@ namespace moviedb_dotnet.Controllers
             catch (HttpRequestException ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status403Forbidden);
+                return StatusCode(ex.StatusCode != null ? (int)ex.StatusCode : StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
-        //var bruh = Request.Cookies["token"];
 
         [HttpPost]
         public async Task<IActionResult> CreateMovie(MovieRequestBody dto)
         {
-            return await HandleServiceCall(async () => await _service.CreateMovie(dto), "CreateMovie");
+            return await HandleServiceCall(async () => await _service.CreateMovie(Request.Cookies["token"], dto), "CreateMovie");
         }
 
         [HttpGet]
@@ -74,13 +72,13 @@ namespace moviedb_dotnet.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(MovieRequestBody dto, [FromQuery(Name = "id")] string id)
         {
-            return await HandleServiceCall(async () => await _service.UpdateMovie(dto, id), "UpdateMovie");
+            return await HandleServiceCall(async () => await _service.UpdateMovie(Request.Cookies["token"], dto, id), "UpdateMovie");
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteMovie([FromQuery(Name = "id")] string id)
         {
-            return await HandleServiceCall(async () => await _service.DeleteMovie(id), "DeleteMovie");
+            return await HandleServiceCall(async () => await _service.DeleteMovie(Request.Cookies["token"], id), "DeleteMovie");
         }
     }
 }
