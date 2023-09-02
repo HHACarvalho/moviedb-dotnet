@@ -4,7 +4,6 @@ using moviedb_dotnet.DTOs;
 using moviedb_dotnet.Mappers;
 using moviedb_dotnet.Repos.IRepos;
 using moviedb_dotnet.Services.IServices;
-using System.Diagnostics;
 
 namespace moviedb_dotnet.Services
 {
@@ -25,7 +24,6 @@ namespace moviedb_dotnet.Services
             request.Headers.Add("Cookie", "token=" + jwt);
 
             var result = await _http.SendAsync(request);
-            Debug.WriteLine(result.StatusCode);
             result.EnsureSuccessStatusCode();
         }
 
