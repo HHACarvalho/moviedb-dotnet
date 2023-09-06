@@ -2,11 +2,33 @@
 
 REST API built with ASP.NET Core
 
+# Commands
+
+### Build the application
+
+```
+dotnet build
+```
+
+### Run the application
+
+```
+dotnet run
+```
+
+### Run the tests
+
+```
+dotnet test
+```
+
 # Routes
+
+Default API url - http://localhost:4000
 
 # Movie
 
-### Create movie - http://localhost:4000/movie - POST
+### Create movie - POST /movie
 
 Adds a new movie to the database.
 
@@ -26,7 +48,7 @@ Adds a new movie to the database.
 
 ---
 
-### Find all movies - http://localhost:4000/movie/all?pageNumber=VALUE&pageSize=VALUE - GET
+### Find all movies - GET /movie/all?pageNumber&pageSize
 
 Retrieves a list of the lastest 20 movies, or another custom list if both parameters are provided. Default values for *pageNumber* and *pageSize* are 1 and 20, respectively.
 
@@ -41,7 +63,7 @@ Retrieves a list of the lastest 20 movies, or another custom list if both parame
 
 ---
 
-### Find movies - http://localhost:4000/movie?movieTitle=VALUE - GET
+### Find movies - GET /movie/search?movieTitle
 
 Retrieves a list of movies whose names include the value of the 'movieTitle' parameter.
 
@@ -55,7 +77,7 @@ Retrieves a list of movies whose names include the value of the 'movieTitle' par
 
 ---
 
-### Find one movie - http://localhost:4000/movie?movieId=VALUE - GET
+### Find one movie - GET /movie?movieId
 
 Retrieves a single movie by its ID.
 
@@ -69,7 +91,7 @@ Retrieves a single movie by its ID.
 
 ---
 
-### Update movie - http://localhost:4000/movie?movieId=VALUE - PUT
+### Update movie -  PUT /movie?movieId
 
 Updates an existing movie.
 
@@ -95,7 +117,7 @@ Updates an existing movie.
 
 ---
 
-### Delete movie - http://localhost:4000/movie?movieId=VALUE - DELETE
+### Delete movie - DELETE /movie?movieId
 
 Deletes a movie from the database.
 
