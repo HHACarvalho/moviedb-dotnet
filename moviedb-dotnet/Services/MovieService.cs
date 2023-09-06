@@ -62,7 +62,7 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<List<MovieDTO>>> FindAllMovies(int pageNumber, int pageSize)
         {
-            var movieList = await _repo.FindAll(pageNumber, pageSize);
+            var movieList = await _repo.FindAll(pageNumber != 0 ? pageNumber : 1, pageSize != 0 ? pageSize : 20);
             if (movieList.Count == 0)
             {
                 return Result<List<MovieDTO>>.Fail("There are no movies");

@@ -16,11 +16,6 @@ namespace moviedb_dotnet.Repos
 
         public async Task<List<Movie>> FindAll(int pageNumber, int pageSize)
         {
-            if (pageNumber == 0 || pageSize == 0)
-            {
-                return await FindAll();
-            }
-
             return await _dbs.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         }
     }
