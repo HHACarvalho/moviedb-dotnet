@@ -4,11 +4,13 @@ REST API built with ASP.NET Core
 
 # Routes
 
-## Movie
+# Movie
 
 ### Create movie - http://localhost:4000/movie - POST
 
 Adds a new movie to the database.
+
+**Requires:** A successful login and a role with sufficient permissions.
 
 **Body:**
 
@@ -20,29 +22,11 @@ Adds a new movie to the database.
 }
 ```
 
-### Find one movie - http://localhost:4000/movie - GET
+**Returns:** If successful, the code 201 and a copy of the created movie. Otherwise, the code 400 and an error message.
 
-Retrieves a single movie.
+### Find all movies - http://localhost:4000/movie/all?pageNumber=VALUE&pageSize=VALUE - GET
 
-**Parameters:**
-
-| Parameter | Value                                |
-|:----------|:-------------------------------------|
-| id        | 9eea2d93-ff5c-4439-a2c8-9cccf10323f9 |
-
-### Find movies - http://localhost:4000/movie - GET
-
-Retrieves a list of movies whose names include the value of the 'title' parameter.
-
-**Parameters:**
-
-| Parameter    | Value |
-|:-------------|:------|
-| title        | Rings |
-
-### Find all movies - http://localhost:4000/movie/all - GET
-
-Retrieves a list of all movies, or a sublist if both parameters are provided.
+Retrieves a list of the lastest 20 movies, or another custom list if both parameters are provided. Default values for *pageNumber* and *pageSize* are 1 and 20, respectively.
 
 **Parameters:**
 
@@ -51,9 +35,43 @@ Retrieves a list of all movies, or a sublist if both parameters are provided.
 | pageNumber | 1     |
 | pageSize   | 20    |
 
-### Update movie - http://localhost:4000/movie - PUT
+**Returns:** If successful, the code 200 and a list of movies. Otherwise, the code 404 and an error message.
+
+### Find movies - http://localhost:4000/movie?movieTitle=VALUE - GET
+
+Retrieves a list of movies whose names include the value of the 'movieTitle' parameter.
+
+**Parameters:**
+
+| Parameter    | Value |
+|:-------------|:------|
+| movieTitle   | Rings |
+
+**Return:** If successful, the code 200 and a list of movies. Otherwise, the code 404 and an error message.
+
+### Find one movie - http://localhost:4000/movie?movieId=VALUE - GET
+
+Retrieves a single movie by its ID.
+
+**Parameters:**
+
+| Parameter | Value                                |
+|:----------|:-------------------------------------|
+| movieId   | f0000000-b444-b444-b444-f00000000000 |
+
+**Returns:** If successful, the code 200 and a single movie. Otherwise, the code 404 and an error message.
+
+### Update movie - http://localhost:4000/movie?movieId=VALUE - PUT
 
 Updates an existing movie.
+
+**Requires:** A successful login and a role with sufficient permissions.
+
+**Parameters:**
+
+| Parameter | Value                                |
+|:----------|:-------------------------------------|
+| movieId   | f0000000-b444-b444-b444-f00000000000 |
 
 **Body:**
 
@@ -65,20 +83,20 @@ Updates an existing movie.
 }
 ```
 
-**Parameters:**
+**Returns:** If successful, the code 200 and a copy of the updated movie. Otherwise, the code 404 and an error message.
 
-| Parameter | Value                                |
-|:----------|:-------------------------------------|
-| id        | 9eea2d93-ff5c-4439-a2c8-9cccf10323f9 |
-
-### Delete movie - http://localhost:4000/movie - DELETE
+### Delete movie - http://localhost:4000/movie?movieId=VALUE - DELETE
 
 Deletes a movie from the database.
 
+**Requires:** A successful login and a role with sufficient permissions.
+
 **Parameters:**
 
 | Parameter | Value                                |
 |:----------|:-------------------------------------|
-| id        | 9eea2d93-ff5c-4439-a2c8-9cccf10323f9 |
+| movieId   | f0000000-b444-b444-b444-f00000000000 |
+
+**Returns:** If successful, the code 200 and a copy of the deleted movie. Otherwise, the code 404 and an error message.
 
 ---
