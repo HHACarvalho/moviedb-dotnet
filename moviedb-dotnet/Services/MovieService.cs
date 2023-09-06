@@ -38,28 +38,6 @@ namespace moviedb_dotnet.Services
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
-        public async Task<Result<MovieDTO>> FindOneMovie(string id)
-        {
-            var movie = await _repo.FindOne(id);
-            if (movie == null)
-            {
-                return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
-            }
-
-            return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
-        }
-
-        public async Task<Result<List<MovieDTO>>> FindMovies(string title)
-        {
-            var movieList = await _repo.Find(title);
-            if (movieList.Count == 0)
-            {
-                return Result<List<MovieDTO>>.Fail("No movies with " + title + " in the title were found");
-            }
-
-            return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.ToDTO));
-        }
-
         public async Task<Result<List<MovieDTO>>> FindAllMovies(int pageNumber, int pageSize)
         {
             var movieList = await _repo.FindAll(pageNumber != 0 ? pageNumber : 1, pageSize != 0 ? pageSize : 20);
@@ -71,14 +49,36 @@ namespace moviedb_dotnet.Services
             return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.ToDTO));
         }
 
-        public async Task<Result<MovieDTO>> UpdateMovie(string? jwt, MovieRequestBody dto, string id)
+        public async Task<Result<List<MovieDTO>>> FindMovies(string movieTitle)
+        {
+            var movieList = await _repo.Find(movieTitle);
+            if (movieList.Count == 0)
+            {
+                return Result<List<MovieDTO>>.Fail("No movies with " + movieTitle + " in the title were found");
+            }
+
+            return Result<List<MovieDTO>>.Ok(movieList.ConvertAll(MovieMapper.ToDTO));
+        }
+
+        public async Task<Result<MovieDTO>> FindOneMovie(string movieId)
+        {
+            var movie = await _repo.FindOne(movieId);
+            if (movie == null)
+            {
+                return Result<MovieDTO>.Fail("No movie with the id '" + movieId + "' was found");
+            }
+
+            return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
+        }
+
+        public async Task<Result<MovieDTO>> UpdateMovie(string? jwt, string movieId, MovieRequestBody dto)
         {
             await CheckPermissions(jwt);
 
-            var movie = await _repo.FindOne(id);
+            var movie = await _repo.FindOne(movieId);
             if (movie == null)
             {
-                return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
+                return Result<MovieDTO>.Fail("No movie with the id '" + movieId + "' was found");
             }
 
             movie.Title = dto.Title;
@@ -90,14 +90,14 @@ namespace moviedb_dotnet.Services
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
-        public async Task<Result<MovieDTO>> DeleteMovie(string? jwt, string id)
+        public async Task<Result<MovieDTO>> DeleteMovie(string? jwt, string movieId)
         {
             await CheckPermissions(jwt);
 
-            var movie = await _repo.FindOne(id);
+            var movie = await _repo.FindOne(movieId);
             if (movie == null)
             {
-                return Result<MovieDTO>.Fail("No movie with the id '" + id + "' was found");
+                return Result<MovieDTO>.Fail("No movie with the id '" + movieId + "' was found");
             }
 
             await _repo.Delete(movie);

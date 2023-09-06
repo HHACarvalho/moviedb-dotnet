@@ -65,7 +65,7 @@ namespace moviedb_dotnet.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(MovieRequestBody dto, [FromQuery(Name = "movieId")] string movieId)
         {
-            return await HandleServiceCall(async () => await _service.UpdateMovie(Request.Cookies["token"], dto, movieId));
+            return await HandleServiceCall(async () => await _service.UpdateMovie(Request.Cookies["token"], movieId, dto));
         }
 
         [HttpDelete]

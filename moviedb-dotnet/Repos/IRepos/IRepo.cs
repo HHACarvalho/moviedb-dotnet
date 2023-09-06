@@ -3,8 +3,8 @@
     public interface IRepo<TEntity>
     {
         Task Create(TEntity obj);
-        Task<TEntity?> FindOne(string id);
         Task<List<TEntity>> FindAll();
+        Task<TEntity?> FindOne(string id);
         Task Delete(TEntity obj);
         Task CommitChanges();
     }

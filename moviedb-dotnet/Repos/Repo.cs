@@ -21,14 +21,14 @@ namespace moviedb_dotnet.Repos
             await CommitChanges();
         }
 
-        public virtual async Task<TEntity?> FindOne(string id)
-        {
-            return await _dbs.Where(x => x.Id.ToString().Equals(id)).FirstOrDefaultAsync();
-        }
-
         public virtual async Task<List<TEntity>> FindAll()
         {
             return await _dbs.ToListAsync();
+        }
+
+        public virtual async Task<TEntity?> FindOne(string id)
+        {
+            return await _dbs.Where(x => x.Id.ToString().Equals(id)).FirstOrDefaultAsync();
         }
 
         public virtual async Task Delete(TEntity obj)
