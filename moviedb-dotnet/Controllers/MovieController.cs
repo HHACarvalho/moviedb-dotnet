@@ -28,10 +28,6 @@ namespace moviedb_dotnet.Controllers
 
                 return Ok(result.Value);
             }
-            catch (HttpRequestException ex)
-            {
-                return StatusCode(ex.StatusCode != null ? (int)ex.StatusCode : StatusCodes.Status400BadRequest, ex.Message);
-            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
