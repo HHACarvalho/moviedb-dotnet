@@ -7,7 +7,15 @@ namespace moviedb_dotnet.Mappers
     {
         public static MovieDTO ToDTO(Movie movie)
         {
-            return new MovieDTO { Id = movie.Id.ToString(), Title = movie.Title, Director = movie.Director, Year = movie.Year };
+            return new MovieDTO
+            {
+                Id = movie.Id.ToString(),
+                Title = movie.Title,
+                Director = movie.Director,
+                Poster = movie.Poster,
+                Synopsis = movie.Synopsis,
+                Year = movie.Year
+            };
         }
     }
 }
