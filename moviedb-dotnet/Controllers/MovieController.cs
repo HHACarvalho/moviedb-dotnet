@@ -41,7 +41,7 @@ namespace moviedb_dotnet.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMovie(MovieRequestBody dto)
         {
-            return await HandleServiceCall(async () => await _service.CreateMovie(Request.Cookies["token"], dto));
+            return await HandleServiceCall(async () => await _service.CreateMovie(dto));
         }
 
         [HttpGet("all")]
@@ -65,13 +65,13 @@ namespace moviedb_dotnet.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(MovieRequestBody dto, [FromQuery(Name = "movieId")] string movieId)
         {
-            return await HandleServiceCall(async () => await _service.UpdateMovie(Request.Cookies["token"], movieId, dto));
+            return await HandleServiceCall(async () => await _service.UpdateMovie(movieId, dto));
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteMovie([FromQuery(Name = "movieId")] string movieId)
         {
-            return await HandleServiceCall(async () => await _service.DeleteMovie(Request.Cookies["token"], movieId));
+            return await HandleServiceCall(async () => await _service.DeleteMovie(movieId));
         }
     }
 }
