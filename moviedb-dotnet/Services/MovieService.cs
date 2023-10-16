@@ -18,7 +18,7 @@ namespace moviedb_dotnet.Services
 
         public async Task<Result<MovieDTO>> CreateMovie(MovieRequestBody dto)
         {
-            var movie = new Movie(dto.Title, dto.Director, dto.Year);
+            var movie = new Movie(dto.Title, dto.Director, dto.Poster, dto.Synopsis, dto.Year);
 
             await _repo.Create(movie);
 
@@ -68,6 +68,8 @@ namespace moviedb_dotnet.Services
 
             movie.Title = dto.Title;
             movie.Director = dto.Director;
+            movie.Poster = dto.Poster;
+            movie.Synopsis = dto.Synopsis;
             movie.Year = dto.Year;
 
             await _repo.CommitChanges();
