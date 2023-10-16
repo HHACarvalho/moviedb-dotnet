@@ -10,8 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDBContext>();
 
-builder.Services.AddHttpClient();
-
 builder.Services.AddTransient<IMovieRepo, MovieRepo>();
 builder.Services.AddTransient<IMovieService, MovieService>();
 

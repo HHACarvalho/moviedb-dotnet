@@ -9,28 +9,15 @@ namespace moviedb_dotnet.Services
 {
     public class MovieService : IMovieService
     {
-        private readonly HttpClient _http;
         private readonly IMovieRepo _repo;
 
-        public MovieService(HttpClient http, IMovieRepo repo)
+        public MovieService(IMovieRepo repo)
         {
-            _http = http;
             _repo = repo;
         }
 
-        private async Task CheckPermissions(string? jwt)
+        public async Task<Result<MovieDTO>> CreateMovie(MovieRequestBody dto)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:3000/validation/movie");
-            request.Headers.Add("Cookie", "token=" + jwt);
-
-            var result = await _http.SendAsync(request);
-            result.EnsureSuccessStatusCode();
-        }
-
-        public async Task<Result<MovieDTO>> CreateMovie(string? jwt, MovieRequestBody dto)
-        {
-            await CheckPermissions(jwt);
-
             var movie = new Movie(dto.Title, dto.Director, dto.Year);
 
             await _repo.Create(movie);
@@ -71,10 +58,8 @@ namespace moviedb_dotnet.Services
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
-        public async Task<Result<MovieDTO>> UpdateMovie(string? jwt, string movieId, MovieRequestBody dto)
+        public async Task<Result<MovieDTO>> UpdateMovie(string movieId, MovieRequestBody dto)
         {
-            await CheckPermissions(jwt);
-
             var movie = await _repo.FindOne(movieId);
             if (movie == null)
             {
@@ -90,10 +75,8 @@ namespace moviedb_dotnet.Services
             return Result<MovieDTO>.Ok(MovieMapper.ToDTO(movie));
         }
 
-        public async Task<Result<MovieDTO>> DeleteMovie(string? jwt, string movieId)
+        public async Task<Result<MovieDTO>> DeleteMovie(string movieId)
         {
-            await CheckPermissions(jwt);
-
             var movie = await _repo.FindOne(movieId);
             if (movie == null)
             {
