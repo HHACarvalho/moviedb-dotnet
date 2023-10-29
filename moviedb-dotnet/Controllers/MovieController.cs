@@ -23,7 +23,7 @@ namespace moviedb_dotnet.Controllers
                 var result = await serviceCall();
                 if (!result.IsSuccess)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, new { msg = result.Error });
+                    return StatusCode(StatusCodes.Status400BadRequest, new { error = result.Error });
                 }
 
                 return StatusCode(StatusCodes.Status200OK, result.Value);
@@ -31,7 +31,7 @@ namespace moviedb_dotnet.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { msg = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
             }
         }
 
