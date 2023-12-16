@@ -32,8 +32,6 @@ Default API url - http://localhost:4000
 
 Adds a new movie to the database.
 
-**Requires:** A successful login and a role with sufficient permissions.
-
 **Body:**
 
 ```json
@@ -95,8 +93,6 @@ Retrieves a single movie by its ID.
 
 Updates an existing movie.
 
-**Requires:** A successful login and a role with sufficient permissions.
-
 **Parameters:**
 
 | Parameter | Value                                |
@@ -120,8 +116,6 @@ Updates an existing movie.
 ### Delete movie - DELETE /movie?movieId
 
 Deletes a movie from the database.
-
-**Requires:** A successful login and a role with sufficient permissions.
 
 **Parameters:**
 
