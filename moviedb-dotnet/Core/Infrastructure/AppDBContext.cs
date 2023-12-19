@@ -7,14 +7,11 @@ namespace moviedb_dotnet.Core.Infrastructure
     {
         public DbSet<Movie> Movies { get; set; }
 
+        public AppDBContext(DbContextOptions options) : base(options) { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new MovieConfig());
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "movieDB");
         }
     }
 }

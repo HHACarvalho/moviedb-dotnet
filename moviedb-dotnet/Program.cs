@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using moviedb_dotnet.Core.Infrastructure;
 using moviedb_dotnet.Repos;
 using moviedb_dotnet.Repos.IRepos;
@@ -21,7 +22,9 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 
-builder.Services.AddDbContext<AppDBContext>();
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection"))
+);
 
 builder.Services.AddTransient<IMovieRepo, MovieRepo>();
 builder.Services.AddTransient<IMovieService, MovieService>();
