@@ -5,19 +5,19 @@ namespace moviedb_dotnet.DTOs
     public class MovieRequestBody
     {
         [Required]
-        [StringLength(96, MinimumLength = 1)]
+        [MaxLength(96)]
         public required string Title { get; set; }
 
         [Required]
-        [StringLength(32, MinimumLength = 1)]
+        [MaxLength(48)]
         public required string Director { get; set; }
 
         [Required]
-        [StringLength(512, MinimumLength = 1)]
+        [MaxLength(256)]
         public required string Poster { get; set; }
 
         [Required]
-        [StringLength(512, MinimumLength = 1)]
+        [MaxLength(512)]
         public required string Synopsis { get; set; }
 
         [Required]

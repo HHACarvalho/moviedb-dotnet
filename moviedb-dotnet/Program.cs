@@ -5,13 +5,13 @@ using moviedb_dotnet.Repos.IRepos;
 using moviedb_dotnet.Services;
 using moviedb_dotnet.Services.IServices;
 
-var corsPolicy = "AllowAllOrigins";
+var corsPolicyName = "AllowAllOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: corsPolicy, policy =>
+    options.AddPolicy(name: corsPolicyName, policy =>
     {
         policy
         .AllowAnyOrigin()
@@ -23,8 +23,9 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection"))
-);
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection"));
+});
 
 builder.Services.AddTransient<IMovieRepo, MovieRepo>();
 builder.Services.AddTransient<IMovieService, MovieService>();
@@ -35,7 +36,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseCors(corsPolicy);
+app.UseCors(corsPolicyName);
 
 app.UseAuthorization();
 

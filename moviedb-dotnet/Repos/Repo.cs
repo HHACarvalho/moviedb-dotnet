@@ -11,8 +11,8 @@ namespace moviedb_dotnet.Repos
 
         public Repo(AppDBContext dbc, DbSet<TEntity> dbs)
         {
-            _dbc = dbc ?? throw new ArgumentNullException(nameof(dbc));
-            _dbs = dbs ?? throw new ArgumentNullException(nameof(dbs));
+            _dbc = dbc;
+            _dbs = dbs;
         }
 
         public virtual async Task Create(TEntity obj)

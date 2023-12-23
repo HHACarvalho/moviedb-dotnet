@@ -1,22 +1,23 @@
 ﻿using moviedb_dotnet.Core.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace moviedb_dotnet.Domain
 {
-    public class Movie : Entity
+    public class Movie(string director, string title, string poster, string synopsis, int year) : Entity
     {
-        public string Title { get; set; }
-        public string Director { get; set; }
-        public string Poster { get; set; }
-        public string Synopsis { get; set; }
-        public int Year { get; set; }
+        [MaxLength(96)]
+        public string Title { get; set; } = title;
 
-        public Movie(string title, string director, string poster, string synopsis, int year)
-        {
-            Title = title;
-            Director = director;
-            Poster = poster;
-            Synopsis = synopsis;
-            Year = year;
-        }
+        [MaxLength(48)]
+        public string Director { get; set; } = director;
+
+        [MaxLength(256)]
+        public string Poster { get; set; } = poster;
+
+        [MaxLength(512)]
+        public string Synopsis { get; set; } = synopsis;
+
+        [Range(1888, int.MaxValue)]
+        public int Year { get; set; } = year;
     }
 }
